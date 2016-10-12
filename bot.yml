@@ -1,6 +1,6 @@
 name: Survey App
 description: I provide instant feedback about the event sometimes even before it ends
-avatar: resources/avatar.png
+avatar: resources/avatar.jpg
 config:
 # - name: CLIENT_ID
 #   friendly_name: Client ID
