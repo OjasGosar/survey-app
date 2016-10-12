@@ -104,6 +104,8 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                         callback: function(reply, convo) {
                                             convo.say('it was only okay?');
                                             convo.next();
+                                            console.log("reply:",reply);
+                                            console.log("convo:",convo);
                                             // do something awesome here.
                                         }
                                     },
@@ -112,6 +114,8 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                         callback: function(reply, convo) {
                                             convo.say('I am glad you liked it!');
                                             convo.next();
+                                            console.log("reply:",reply);
+                                            console.log("convo:",convo);
                                         }
                                     },
                                     {
@@ -119,6 +123,8 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                         callback: function(reply, convo) {
                                             convo.say('I am flying high :rocket:');
                                             convo.next();
+                                            console.log("reply:",reply);
+                                            console.log("convo:",convo);
                                         }
                                     },
                                     {
