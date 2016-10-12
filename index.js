@@ -23,7 +23,7 @@ if (process.env.MONGOLAB_URI) {
 config.debug = true;
 config.logLevel = 7;
 config.retry = Infinity;
-config.interactive_replies: true;
+config.interactive_replies = true;
 
 var controller = Botkit.slackbot(config);
 
