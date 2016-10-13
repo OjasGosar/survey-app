@@ -193,7 +193,7 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
 
 function useSlackQuestion(reply, convo, bot) {
     convo.ask({
-        text: "How do you think of Slack?",
+        text: "What do you think of Slack?",
         attachments:[
             {
                 title: 'choose your thought..',
@@ -271,7 +271,7 @@ function whichBotQuestion(reply, convo, bot) {
             {
                 title: 'choose your :robot_face:',
                 fallback: 'You are unable to choose the actions!',
-                callback_id: 'rate_bot',
+                callback_id: 'which_bot',
                 attachment_type: 'default',
                 actions: [
                     {
@@ -305,9 +305,9 @@ function whichBotQuestion(reply, convo, bot) {
         {
             pattern: "scrum bot",
             callback: function(reply, convo) {
-                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "Scrum bot", "bot_scrum"));
+                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "@scrum_bot :scrum_bot: - sounds like scrum masters take a lot of your time :wink: ", "bot_scrum"));
                 //convo.say('it was only okay?');
-                //useSlackQuestion(reply, convo);
+                otherBotIdeas(reply, convo, bot);
                 convo.next();
                 // do something awesome here.
             }
@@ -315,27 +315,27 @@ function whichBotQuestion(reply, convo, bot) {
         {
             pattern: "cats bot",
             callback: function(reply, convo) {
-                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "Cats bot", "bot_cats"));
+                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "@cats_bot :cats_bot: - sounds like accounting team doesnt leave you alone :smile: ", "bot_cats"));
                 //convo.say('I am glad you liked it!');
-                //useSlackQuestion(reply, convo);
+                otherBotIdeas(reply, convo, bot);
                 convo.next();
             }
         },
         {
             pattern: "survey bot",
             callback: function(reply, convo) {
-                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "Survey bot", "bot_survey"));
+                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "@survey_bot :survey_bot: - sounds like you are a fan of quick results :racing_car: ", "bot_survey"));
                 //convo.say('I am flying high :rocket:');
-                //useSlackQuestion(reply, convo);
+                otherBotIdeas(reply, convo, bot);
                 convo.next();
             }
         },
         {
             pattern: "watson bot",
             callback: function(reply, convo) {
-                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "Watson bot", "bot_watson"));
+                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "@watson_bot :watson_bot: - sounds like you are technology :ninja:", "bot_watson"));
                 //convo.say('I am flying high :rocket:');
-                //useSlackQuestion(reply, convo);
+                otherBotIdeas(reply, convo, bot);
                 convo.next();
             }
         },
@@ -349,7 +349,103 @@ function whichBotQuestion(reply, convo, bot) {
                 console.log("response:",response);
             }
         }
-    ],{'key': 'rate_slack'});
+    ],{'key': 'fav_bot'});
+}
+
+function otherBotIdeas(reply, convo, bot) {
+    convo.ask({
+        text: "Which of the following ideas would you like to see as bots?",
+        attachments:[
+            {
+                title: 'choose your idea',
+                fallback: 'You are unable to choose the actions!',
+                callback_id: 'other_bot',
+                attachment_type: 'default',
+                actions: [
+                    {
+                        "name":"vacation tracker bot",
+                        "text": "Vacation tracker :robot_face:",
+                        "value": "vacation tracker bot",
+                        "type": "button",
+                    },
+                    {
+                        "name":"360 feedback bot",
+                        "text": "360 Feedback :robot_face:",
+                        "value": "360 feedback bot",
+                        "type": "button",
+                    },
+                    {
+                        "name":"complaint bot",
+                        "text": "Complaint :robot_face:",
+                        "value": "complaint bot",
+                        "type": "button",
+                    },
+                    {
+                        "name":"purchase order bot",
+                        "text": "Purchase order :robot_face:",
+                        "value": "purchase order bot",
+                        "type": "button",
+                    }
+                ]
+            }
+        ]
+    },[
+        {
+            pattern: "vacation tracker bot",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("Which of the following ideas would you like to see as bots?", "Vacation tracker bot - Sounds like you travel a the world :world_map: ", "bot_vacationTracker"));
+                //convo.say('it was only okay?');
+                extraComments(reply, convo, bot);
+                convo.next();
+                // do something awesome here.
+            }
+        },
+        {
+            pattern: "360 feedback bot",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("Which of the following ideas would you like to see as bots?", "360 Feedback bot - sounds like you interested in growth :ok_hand::skin-tone-4: ", "bot_feedback"));
+                //convo.say('I am glad you liked it!');
+                extraComments(reply, convo, bot);
+                convo.next();
+            }
+        },
+        {
+            pattern: "complaint bot",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("Which of the following ideas would you like to see as bots?", "Complaint bot - sounds like you need some peace of mind :peace_symbol: ", "bot_complaint"));
+                //convo.say('I am flying high :rocket:');
+                extraComments(reply, convo, bot);
+                convo.next();
+            }
+        },
+        {
+            pattern: "purchase order bot",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("Which of the following ideas would you like to see as bots?", "Purchase order :robot_face: - sounds like you are the office admin :smile:", "bot_po"));
+                //convo.say('I am flying high :rocket:');
+                extraComments(reply, convo, bot);
+                convo.next();
+            }
+        },
+        {
+            default: true,
+            callback: function(reply, convo) {
+                convo.say('you chose not to click my buttons.. hmm i wonder');
+                convo.next();
+                console.log("reply:",reply);
+                console.log("convo:",convo);
+                console.log("response:",response);
+            }
+        }
+    ],{'key': 'otherIdeas'});
+}
+
+function extraComments(reply, convo, bot) {
+    convo.ask("Any other ideas/pain points/comments/feedback..?", function(response, convo) {
+        //convo.say("Awesome.");
+        //askTodayStatus(response, convo);
+        convo.next();
+    }, {'key': 'extraComments'});
 }
 
 function fetchInteractiveReply(interactiveText, interactiveTitle, interactiveCallbackId) {
