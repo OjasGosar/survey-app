@@ -197,7 +197,7 @@ function fetchInteractiveReply (interactiveText, interactiveTitle, interactiveCa
         attachments:[
             {
                 title: interactiveTitle,
-                fallback: "nothing to fall back!"
+                fallback: 'nothing to fall back!',
                 callback_id: interactiveCallbackId,
                 attachment_type: 'default'
             }
