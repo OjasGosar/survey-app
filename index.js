@@ -239,15 +239,25 @@ controller.hears(['raffle'], 'direct_message,direct_mention,mention', function(b
 });
 
 function raffelResult(message, bot) {
+    console.log("raffleList:",raffleList);
     var thirdRandomNumber = Math.floor(Math.random() * raffleList.length);
+    console.log("thirdRandomNumber:",thirdRandomNumber);
     var thirdPrize = raffleList[thirdRandomNumber];
+    console.log("thirdPrize:",thirdPrize);
     raffleList = raffleList.splice(thirdRandomNumber,1);
+    console.log("raffleList after third prize slice:",raffleList);
     var secondRandomNumber = Math.floor(Math.random() * raffleList.length);
+    console.log("secondRandomNumber:",secondRandomNumber);
     var secondPrize = raffleList[secondRandomNumber];
+    console.log("secondPrize:",secondPrize);
     raffleList = raffleList.splice(secondRandomNumber,1);
+    console.log("raffleList after second prize slice:",raffleList);
     var firstRandomNumber = Math.floor(Math.random() * raffleList.length);
+    console.log("firstRandomNumber:",firstRandomNumber);
     var firstPrize = raffleList[firstRandomNumber];
+    console.log("firstPrize:",firstPrize);
     raffleList = [];
+    console.log("raffleList after first prize slice:",raffleList);
     bot.reply(message, "Here are the winners of the Raffle :"+
         "\nThird Prize: <@" + thirdPrize + ">" +
         "\nSecond Prize: <@" + secondPrize + ">" +
