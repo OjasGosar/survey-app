@@ -106,7 +106,7 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                         callback: function(reply, convo) {
                                             bot.replyInteractive(reply, fetchInteractiveReply("How would you rate this BBL?", "Okay: It was only :ok:..", "rate_bbl_okay"));
                                             //convo.say('it was only okay?');
-                                            useSlackQuestion(reply, convo);
+                                            useSlackQuestion(reply, convo, bot);
                                             convo.next();
                                             // do something awesome here.
                                         }
@@ -116,7 +116,7 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                         callback: function(reply, convo) {
                                             bot.replyInteractive(reply, fetchInteractiveReply("How would you rate this BBL?", "Like: I am glad you liked it!", "rate_bbl_like"));
                                             //convo.say('I am glad you liked it!');
-                                            useSlackQuestion(reply, convo);
+                                            useSlackQuestion(reply, convo, bot);
                                             convo.next();
                                         }
                                     },
@@ -125,7 +125,7 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                         callback: function(reply, convo) {
                                             bot.replyInteractive(reply, fetchInteractiveReply("How would you rate this BBL?", "Awesome: I am flying high :rocket:", "rate_bbl_awesome"));
                                             //convo.say('I am flying high :rocket:');
-                                            useSlackQuestion(reply, convo);
+                                            useSlackQuestion(reply, convo, bot);
                                             convo.next();
                                         }
                                     },
@@ -191,7 +191,7 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
     }
 });
 
-function useSlackQuestion(reply, convo) {
+function useSlackQuestion(reply, convo, bot) {
     convo.ask({
         text: "How do you think of Slack?",
         attachments:[
