@@ -203,19 +203,19 @@ function useSlackQuestion(reply, convo, bot) {
                 actions: [
                     {
                         "name":"not my tool",
-                        "text": "Not my tool",
+                        "text": "Not my tool :card_file_box: ",
                         "value": "not my tool",
                         "type": "button",
                     },
                     {
                         "name":"interested",
-                        "text": "Interested",
+                        "text": "Interested :raised_hand::skin-tone-4: ",
                         "value": "interested",
                         "type": "button",
                     },
                     {
                         "name":"my favorite",
-                        "text": "My Favorite",
+                        "text": "My Favorite :heart: ",
                         "value": "my favorite",
                         "type": "button",
                     }
@@ -226,7 +226,7 @@ function useSlackQuestion(reply, convo, bot) {
         {
             pattern: "not my tool",
             callback: function(reply, convo) {
-                bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "Not my tool", "rate_slack_notMyTool"));
+                bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "Not my tool :neutral_face: ", "rate_slack_notMyTool"));
                 //convo.say('it was only okay?');
                 whichBotQuestion(reply, convo, bot);
                 convo.next();
@@ -236,7 +236,7 @@ function useSlackQuestion(reply, convo, bot) {
         {
             pattern: "interested",
             callback: function(reply, convo) {
-                bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "Interested!", "rate_slack_interested"));
+                bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "Interested! :raised_hand::skin-tone-4: ", "rate_slack_interested"));
                 //convo.say('I am glad you liked it!');
                 whichBotQuestion(reply, convo, bot);
                 convo.next();
@@ -245,7 +245,7 @@ function useSlackQuestion(reply, convo, bot) {
         {
             pattern: "my favorite",
             callback: function(reply, convo) {
-                bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "My favorite", "rate_slack_fav"));
+                bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "My favorite :heart:", "rate_slack_fav"));
                 //convo.say('I am flying high :rocket:');
                 whichBotQuestion(reply, convo, bot);
                 convo.next();
