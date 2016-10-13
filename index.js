@@ -140,48 +140,53 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                         }
                                     }
                                 ],{'key': 'rate_bbl'});
-                                // convo.on('end', function(dm) {
-                                //     if (dm.status == 'completed') {
-                                //         controller.storage.users.get(userInfo.user.id, function(err, user) {
-                                //             if (!user) {
-                                //                 user = {
-                                //                     id: userInfo.user.id,
-                                //                     realName: userInfo.user.name,
-                                //                     channels: []
-                                //                 }
-                                //             }
+                                convo.on('end', function(dm) {
+                                    if (dm.status == 'completed') {
+                                        controller.storage.users.get(userInfo.user.id, function(err, user) {
+                                            if (!user) {
+                                                user = {
+                                                    id: userInfo.user.id,
+                                                    realName: userInfo.user.name,
+                                                    channels: []
+                                                }
+                                            }
 
-                                //             scrum_status = "\nStatus for @" + user.realName + ":\n Yesterday: "+dm.extractResponse('yesterday') + "\n Today: " + dm.extractResponse('today') +"\n Issues: " + dm.extractResponse('issues');
+                                            feedback = "\n\nFeedback for @" + user.realName +
+                                            ":\n How would you rate this BBL?\n "+dm.extractResponse('rate_bbl') +
+                                            ":\n\n What do you think of Slack?\n "+dm.extractResponse('rate_slack') +
+                                            "\n\n Which bot would you want to use?\n " + dm.extractResponse('fav_bot') +
+                                            "\n\n Which of the following ideas would you like to see as bots?\n " + dm.extractResponse('otherIdeas') +
+                                            "\n\n Any other ideas/pain points/comments/feedback..?\n " + dm.extractResponse('extraComments');
 
-                                //             user.channels.push({
-                                //                 id: message.channel,
-                                //                 scrumStatus: [{
-                                //                     id: date,
-                                //                     text:scrum_status
-                                //                 }]
-                                //             });
+                                            user.channels.push({
+                                                id: message.channel,
+                                                surveys: [{
+                                                    id: 'bbl',
+                                                    text:feedback
+                                                }]
+                                            });
 
-                                //             console.log("User Object: ", user)
-                                //             controller.storage.users.save(user, function(err, id) {
-                                //                 console.log("User:",id);
-                                //             });
-                                //         })
-                                //     }
-                                //     else {
-                                //         bot.startPrivateConversation(response.user, function(response, convo) { 
-                                //             convo.say('OK, this didnt go well, i will report to scrum master to personally look into you!');
-                                //         });
-                                //     }
-                                // });
+                                            console.log("User Object: ", user)
+                                            controller.storage.users.save(user, function(err, id) {
+                                                console.log("User:",id);
+                                            });
+                                        })
+                                    }
+                                    else {
+                                        bot.startPrivateConversation(response.user, function(response, convo) { 
+                                            convo.say('OK, this didnt go well, Sorry about that..');
+                                        });
+                                    }
+                                });
                             });
                         }
                     });
                 }
 
-                // setTimeout(function() {
-                //     //get status & upload a file
-                //     getStatusAndUpload(message, date);
-                // }, process.env.CHANNEL_SCRUM_TIMEOUT);
+                setTimeout(function() {
+                    //get status & upload a file
+                    getStatusAndUpload(message, 'bbl');
+                }, process.env.CHANNEL_SURVEY_TIMEOUT);
             }
 
         }.bind(this));
@@ -485,79 +490,79 @@ controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "I'm here!")
 });
 
-// function getStatusAndUpload(message, date){
-//     controller.storage.users.all(function(err,userList) {
+function getStatusAndUpload(message, key){
+    controller.storage.users.all(function(err,userList) {
 
-//         if (err) {
-//             console.log("Error getting all users: ", err);
-//         }
-//         else {
-//             console.log("Success all users: ", JSON.stringify(userList));
-//             //var jsonUserList = JSON.stringify(userList);
-//             var status = "";
+        if (err) {
+            console.log("Error getting all users: ", err);
+        }
+        else {
+            console.log("Success all users: ", JSON.stringify(userList));
+            //var jsonUserList = JSON.stringify(userList);
+            var status = "";
             
-//             for (user in userList) {
-//                 console.log("userList[user].channels", userList[user].channels);
-//                 for (userChannel in userList[user].channels) {
-//                     console.log("userList[user].channels[userChannel]:", userList[user].channels[userChannel]);
-//                     console.log("message.channel", message.channel);
-//                     if (userList[user].channels[userChannel].id == message.channel) {
-//                         for (scrumStatus in userList[user].channels[userChannel].scrumStatus) {
-//                             console.log("userList[user].channels[userChannel].scrumStatus:", userList[user].channels[userChannel].scrumStatus);
-//                             console.log("date:", date);
-//                             if (userList[user].channels[userChannel].scrumStatus[scrumStatus].id == date) {
-//                                 console.log("found Match:");
-//                                 status += userList[user].channels[userChannel].scrumStatus[scrumStatus].text;
-//                             }
-//                         }
-//                     }
+            for (user in userList) {
+                console.log("userList[user].channels", userList[user].channels);
+                for (userChannel in userList[user].channels) {
+                    console.log("userList[user].channels[userChannel]:", userList[user].channels[userChannel]);
+                    console.log("message.channel", message.channel);
+                    if (userList[user].channels[userChannel].id == message.channel) {
+                        for (surveys in userList[user].channels[userChannel].surveys) {
+                            console.log("userList[user].channels[userChannel].surveys:", userList[user].channels[userChannel].surveys);
+                            //console.log("key:", key);
+                            if (userList[user].channels[userChannel].surveys[surveys].id == key) {
+                                console.log("found Match:");
+                                status += userList[user].channels[userChannel].surveys[surveys].text;
+                            }
+                        }
+                    }
 
-//                 }
-//             }
+                }
+            }
 
-//             console.log("Final Status: ", status);
-//             bot.api.files.upload({
-//                 content:((!status)? "No Status for Today" : status),
-//                 filename: date+"Scrum-Status",
-//                 channels: message.channel
-//             }, function(err,result) {
-//                 if (err) {
-//                     console.log("Error uploading file", err);
-//                 }
-//                 else {
-//                     console.log("Result:",result);
-//                 }
+            console.log("Final feedback: ", status);
+            bot.api.files.upload({
+                content:((!status)? "No feedback provided" : status),
+                filename: key+"Survey",
+                channels: message.channel
+            }, function(err,result) {
+                if (err) {
+                    console.log("Error uploading file", err);
+                }
+                else {
+                    console.log("Result:",result);
+                }
 
-//             });
-//         }
+            });
+        }
         
-//     });
-// }
+    });
+}
 
-// beepboop.on('add_resource', function (msg) {
-//   console.log('received request to add bot to team')
-// });
+beepboop.on('add_resource', function (msg) {
+  console.log('received request to add bot to team')
+});
 
-// // Send the user who added the bot to their team a welcome message the first time it's connected
-// beepboop.on('botkit.rtm.started', function (bot, resource, meta) {
-//   var slackUserId = resource.SlackUserID
+// Send the user who added the bot to their team a welcome message the first time it's connected
+beepboop.on('botkit.rtm.started', function (bot, resource, meta) {
+  var slackUserId = resource.SlackUserID
 
-//   if (meta.isNew && slackUserId) {
-//     bot.api.im.open({ user: slackUserId }, function (err, response) {
-//       if (err) {
-//         return console.log("im.open error:",err)
-//       }
-//       var dmChannel = response.channel.id
-//       bot.say({channel: dmChannel, text: 'Thanks for adding me to your team!'})
-//       bot.say({channel: dmChannel, text: 'Just /invite me to a channel!'})
-//     })
-//   }
-// });
+  if (meta.isNew && slackUserId) {
+    bot.api.im.open({ user: slackUserId }, function (err, response) {
+      if (err) {
+        return console.log("im.open error:",err)
+      }
+      var dmChannel = response.channel.id
+      bot.say({channel: dmChannel, text: 'Thanks for adding me to your team!'})
+      bot.say({channel: dmChannel, text: 'Just /invite me to a channel!'})
+    })
+  }
+});
 
-// controller.hears(['status', 'state'], 'direct_message,direct_mention,mention', function(bot, message) {
-//     var date = Moment().format("YYYYMMDD");
-//     getStatusAndUpload(message, date);
-// });
+controller.hears(['status', 'state'], 'direct_message,direct_mention,mention', function(bot, message) {
+    //var date = Moment().format("YYYYMMDD");
+    getStatusAndUpload(message, 'bbl');
+});
 // areYouReadyForScrum = function(response, convo) { 
 //     convo.ask('Its Scrum-time! Are you ready for standup?', [
 //         {
