@@ -244,13 +244,13 @@ function raffelResult(message, bot) {
     console.log("thirdRandomNumber:",thirdRandomNumber);
     var thirdPrize = raffleList[thirdRandomNumber];
     console.log("thirdPrize:",thirdPrize);
-    raffleList = raffleList.splice(thirdRandomNumber,1);
+    raffleList.splice(thirdRandomNumber,1);
     console.log("raffleList after third prize slice:",raffleList);
     var secondRandomNumber = Math.floor(Math.random() * raffleList.length);
     console.log("secondRandomNumber:",secondRandomNumber);
     var secondPrize = raffleList[secondRandomNumber];
     console.log("secondPrize:",secondPrize);
-    raffleList = raffleList.splice(secondRandomNumber,1);
+    raffleList.splice(secondRandomNumber,1);
     console.log("raffleList after second prize slice:",raffleList);
     var firstRandomNumber = Math.floor(Math.random() * raffleList.length);
     console.log("firstRandomNumber:",firstRandomNumber);
