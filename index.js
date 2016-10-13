@@ -315,7 +315,7 @@ function whichBotQuestion(reply, convo, bot) {
         {
             pattern: "cats bot",
             callback: function(reply, convo) {
-                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "@cats_bot :cats_bot: - sounds like accounting team doesnt leave you alone :smile: ", "bot_cats"));
+                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "@cats_bot :cats_bot: - your PM will be very happy :smile: ", "bot_cats"));
                 //convo.say('I am glad you liked it!');
                 otherBotIdeas(reply, convo, bot);
                 convo.next();
@@ -444,6 +444,8 @@ function extraComments(reply, convo, bot) {
     convo.ask("Any other ideas/pain points/comments/feedback..?", function(response, convo) {
         //convo.say("Awesome.");
         //askTodayStatus(response, convo);
+        convo.say("Awesome! Thank you for your valuable feedback :sunglasses: ");
+        convo.say("I'll make sure @ojas.gosar buys you a :beer: tonight.. ");
         convo.next();
     }, {'key': 'extraComments'});
 }
