@@ -104,9 +104,9 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                     {
                                         pattern: "it was okay",
                                         callback: function(reply, convo) {
-                                            bot.replyInteractive(reply, fetchInteractiveReply("How would you rate this BBL?", "it was only okay?", "rate_bbl_okay"));
+                                            bot.replyInteractive(reply, fetchInteractiveReply("How would you rate this BBL?", "Okay: It was only :ok:..", "rate_bbl_okay"));
                                             //convo.say('it was only okay?');
-                                            //useSlackQuestion();
+                                            useSlackQuestion(reply, convo);
                                             convo.next();
                                             // do something awesome here.
                                         }
@@ -114,18 +114,18 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                     {
                                         pattern: "i liked it",
                                         callback: function(reply, convo) {
-                                            bot.replyInteractive(reply, fetchInteractiveReply("How would you rate this BBL?", "I am glad you liked it!", "rate_bbl_like"));
+                                            bot.replyInteractive(reply, fetchInteractiveReply("How would you rate this BBL?", "Like: I am glad you liked it!", "rate_bbl_like"));
                                             //convo.say('I am glad you liked it!');
-                                            //useSlackQuestion();
+                                            useSlackQuestion(reply, convo);
                                             convo.next();
                                         }
                                     },
                                     {
                                         pattern: "it was awesome",
                                         callback: function(reply, convo) {
-                                            bot.replyInteractive(reply, fetchInteractiveReply("How would you rate this BBL?", "I am flying high :rocket:", "rate_bbl_awesome"));
-                                            convo.say('I am flying high :rocket:');
-                                            //useSlackQuestion();
+                                            bot.replyInteractive(reply, fetchInteractiveReply("How would you rate this BBL?", "Awesome: I am flying high :rocket:", "rate_bbl_awesome"));
+                                            //convo.say('I am flying high :rocket:');
+                                            useSlackQuestion(reply, convo);
                                             convo.next();
                                         }
                                     },
@@ -139,7 +139,7 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                             console.log("response:",response);
                                         }
                                     }
-                                ]);
+                                ],{'key': 'rate_bbl'});
                                 // convo.on('end', function(dm) {
                                 //     if (dm.status == 'completed') {
                                 //         controller.storage.users.get(userInfo.user.id, function(err, user) {
@@ -191,7 +191,80 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
     }
 });
 
-function fetchInteractiveReply (interactiveText, interactiveTitle, interactiveCallbackId) {
+function useSlackQuestion(reply, convo) {
+    convo.ask({
+        text: "How do you think of Slack?",
+        attachments:[
+            {
+                title: 'choose your thought..',
+                fallback: 'You are unable to choose the actions!',
+                callback_id: 'rate_slack',
+                attachment_type: 'default',
+                actions: [
+                    {
+                        "name":"not my tool",
+                        "text": "Not my tool",
+                        "value": "not my tool",
+                        "type": "button",
+                    },
+                    {
+                        "name":"interested",
+                        "text": "Interested",
+                        "value": "interested",
+                        "type": "button",
+                    },
+                    {
+                        "name":"my favorite",
+                        "text": "My Favorite",
+                        "value": "my favorite",
+                        "type": "button",
+                    }
+                ]
+            }
+        ]
+    },[
+        {
+            pattern: "not my tool",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "Not my tool", "rate_slack_notMyTool"));
+                //convo.say('it was only okay?');
+                //useSlackQuestion(reply, convo);
+                convo.next();
+                // do something awesome here.
+            }
+        },
+        {
+            pattern: "interested",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "Interested!", "rate_slack_interested"));
+                //convo.say('I am glad you liked it!');
+                //useSlackQuestion(reply, convo);
+                convo.next();
+            }
+        },
+        {
+            pattern: "my favorite",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "My favorite", "rate_slack_fav"));
+                //convo.say('I am flying high :rocket:');
+                //useSlackQuestion(reply, convo);
+                convo.next();
+            }
+        },
+        {
+            default: true,
+            callback: function(reply, convo) {
+                convo.say('you chose not to click my buttons.. hmm i wonder');
+                convo.next();
+                console.log("reply:",reply);
+                console.log("convo:",convo);
+                console.log("response:",response);
+            }
+        }
+    ],{'key': 'rate_slack'});
+}
+
+function fetchInteractiveReply(interactiveText, interactiveTitle, interactiveCallbackId) {
     var interactiveReply = {
         text: interactiveText,
         attachments:[
