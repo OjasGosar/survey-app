@@ -75,7 +75,7 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                     attachments:[
                                         {
                                             title: 'choose your feeling..',
-                                            fallback: "You are unable to choose the actions!"
+                                            fallback: 'You are unable to choose the actions!'
                                             callback_id: 'rate_bbl',
                                             attachment_type: 'default',
                                             actions: [
