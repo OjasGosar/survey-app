@@ -228,7 +228,7 @@ function useSlackQuestion(reply, convo, bot) {
             callback: function(reply, convo) {
                 bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "Not my tool", "rate_slack_notMyTool"));
                 //convo.say('it was only okay?');
-                //useSlackQuestion(reply, convo);
+                whichBotQuestion(reply, convo, bot);
                 convo.next();
                 // do something awesome here.
             }
@@ -238,7 +238,7 @@ function useSlackQuestion(reply, convo, bot) {
             callback: function(reply, convo) {
                 bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "Interested!", "rate_slack_interested"));
                 //convo.say('I am glad you liked it!');
-                //useSlackQuestion(reply, convo);
+                whichBotQuestion(reply, convo, bot);
                 convo.next();
             }
         },
@@ -246,6 +246,94 @@ function useSlackQuestion(reply, convo, bot) {
             pattern: "my favorite",
             callback: function(reply, convo) {
                 bot.replyInteractive(reply, fetchInteractiveReply("How do you think of Slack?", "My favorite", "rate_slack_fav"));
+                //convo.say('I am flying high :rocket:');
+                whichBotQuestion(reply, convo, bot);
+                convo.next();
+            }
+        },
+        {
+            default: true,
+            callback: function(reply, convo) {
+                convo.say('you chose not to click my buttons.. hmm i wonder');
+                convo.next();
+                console.log("reply:",reply);
+                console.log("convo:",convo);
+                console.log("response:",response);
+            }
+        }
+    ],{'key': 'rate_slack'});
+}
+
+function whichBotQuestion(reply, convo, bot) {
+    convo.ask({
+        text: "Which bot would you want to use?",
+        attachments:[
+            {
+                title: 'choose your :robot_face:',
+                fallback: 'You are unable to choose the actions!',
+                callback_id: 'rate_bot',
+                attachment_type: 'default',
+                actions: [
+                    {
+                        "name":"scrum bot",
+                        "text": "@scrum_bot :scrum_bot:",
+                        "value": "scrum bot",
+                        "type": "button",
+                    },
+                    {
+                        "name":"cats bot",
+                        "text": "@cats_bot :cats_bot:",
+                        "value": "cats bot",
+                        "type": "button",
+                    },
+                    {
+                        "name":"survey bot",
+                        "text": "@survey_bot :survey_bot:",
+                        "value": "survey bot",
+                        "type": "button",
+                    },
+                    {
+                        "name":"watson bot",
+                        "text": "@watson_bot :watson_bot:",
+                        "value": "watson bot",
+                        "type": "button",
+                    }
+                ]
+            }
+        ]
+    },[
+        {
+            pattern: "scrum bot",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "Scrum bot", "bot_scrum"));
+                //convo.say('it was only okay?');
+                //useSlackQuestion(reply, convo);
+                convo.next();
+                // do something awesome here.
+            }
+        },
+        {
+            pattern: "cats bot",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "Cats bot", "bot_cats"));
+                //convo.say('I am glad you liked it!');
+                //useSlackQuestion(reply, convo);
+                convo.next();
+            }
+        },
+        {
+            pattern: "survey bot",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "Survey bot", "bot_survey"));
+                //convo.say('I am flying high :rocket:');
+                //useSlackQuestion(reply, convo);
+                convo.next();
+            }
+        },
+        {
+            pattern: "watson bot",
+            callback: function(reply, convo) {
+                bot.replyInteractive(reply, fetchInteractiveReply("Which bot would you want to use?", "Watson bot", "bot_watson"));
                 //convo.say('I am flying high :rocket:');
                 //useSlackQuestion(reply, convo);
                 convo.next();
