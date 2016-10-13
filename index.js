@@ -398,7 +398,7 @@ function otherBotIdeas(reply, convo, bot) {
         {
             pattern: "vacation tracker bot",
             callback: function(reply, convo) {
-                bot.replyInteractive(reply, fetchInteractiveReply("Which of the following ideas would you like to see as bots?", "Vacation tracker bot - Sounds like you travel a the world :world_map: ", "bot_vacationTracker"));
+                bot.replyInteractive(reply, fetchInteractiveReply("Which of the following ideas would you like to see as bots?", "Vacation tracker bot - Sounds like you travel the world :world_map: ", "bot_vacationTracker"));
                 //convo.say('it was only okay?');
                 extraComments(reply, convo, bot);
                 convo.next();
