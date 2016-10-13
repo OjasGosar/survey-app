@@ -185,7 +185,7 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
 
                 setTimeout(function() {
                     //get status & upload a file
-                    getStatusAndUpload(message, 'bbl');
+                    getStatusAndUpload(message, 'bbl', bot);
                 }, process.env.CHANNEL_SURVEY_TIMEOUT);
             }
 
@@ -490,7 +490,7 @@ controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "I'm here!")
 });
 
-function getStatusAndUpload(message, key){
+function getStatusAndUpload(message, key, bot){
     controller.storage.users.all(function(err,userList) {
 
         if (err) {
@@ -561,7 +561,7 @@ beepboop.on('botkit.rtm.started', function (bot, resource, meta) {
 
 controller.hears(['status', 'state'], 'direct_message,direct_mention,mention', function(bot, message) {
     //var date = Moment().format("YYYYMMDD");
-    getStatusAndUpload(message, 'bbl');
+    getStatusAndUpload(message, 'bbl', bot);
 });
 // areYouReadyForScrum = function(response, convo) { 
 //     convo.ask('Its Scrum-time! Are you ready for standup?', [
