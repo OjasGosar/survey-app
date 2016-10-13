@@ -35,7 +35,7 @@ controller.setupWebserver(process.env.PORT, function (err, webserver) {
 
 
 controller.hears(['help'], 'direct_message,direct_mention', function (bot, message) {
-  bot.reply(message, "I am your Survey Bot :robot_face:" +
+  bot.reply(message, "I am your Survey Bot :survey_bot:" +
     "\nI can start a Survey on your command & update the channel by uploading a file when the survey finishes or when you request." +
     "\nOnly authorized members in every channel can start survey." +
     "\nCurrently only @ojas.gosar is authorized to start scrum (in order to avoid spam in public channels)." +
