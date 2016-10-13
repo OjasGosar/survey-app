@@ -33,6 +33,7 @@ controller.setupWebserver(process.env.PORT, function (err, webserver) {
     controller.createWebhookEndpoints(controller.webserver);
 });
 
+var raffleList = [];
 
 controller.hears(['help'], 'direct_message,direct_mention', function (bot, message) {
   bot.reply(message, "I am your Survey Bot :survey_bot:" +
@@ -195,6 +196,72 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
         bot.reply(message, 'Sorry <@' + message.user + '>, you are not authorized to spam :wink:');
     }
 });
+
+controller.hears(['raffle'], 'direct_message,direct_mention,mention', function(bot, message) {
+    
+    if (message.user == 'U2K8XK03Z' || message.user == 'U23RT8WQ4') {
+        //var users = [];
+        bot.api.channels.info({
+            channel: message.channel
+        }, function(err, info) {
+            if (err) {
+                bot.botkit.log('Failed to get channel info :(', err);
+                bot.reply(message,"I can't start raffle outside of a channel or in a private channel." +
+                    "\nIf you havent already invited me to a public channel then try `/invite @survey_bot`" +
+                    "\nThen `@survey_bot start` to start a survey" +
+                    "\nYou can also type `@survey_bot help` to find out what i can do for you..");
+            }
+            else {
+                bot.reply(message,"Starting raffle now..");
+                for (var i = 0; i < info.channel.members.length; i++) {
+                    console.log(info.channel.members[i]);
+                    bot.api.users.info({
+                        user: info.channel.members[i]
+                    }, function(err, userInfo) {
+                        if(userInfo.user.is_bot == false) {
+                            console.log("user name:" + userInfo.user.name + " user id:" + userInfo.user.id + " is_bot:" + userInfo.user.is_bot);
+                            raffleList.push(userInfo.user.id)
+                        }
+                    });
+                }
+
+                setTimeout(function() {
+                    //get status & upload a file
+                    raffelResult(message, bot);
+                }, 60000);
+            }
+
+        }.bind(this));
+    }
+    else {
+        bot.reply(message, 'Sorry <@' + message.user + '>, you are not authorized to spam :wink:');
+    }
+});
+
+function raffelResult(message, bot) {
+    var thirdRandomNumber = Math.floor(Math.random() * raffleList.length);
+    var thirdPrize = raffleList[thirdRandomNumber];
+    raffleList = raffleList.splice(thirdRandomNumber,1);
+    var secondRandomNumber = Math.floor(Math.random() * raffleList.length);
+    var secondPrize = raffleList[secondRandomNumber];
+    raffleList = raffleList.splice(secondRandomNumber,1);
+    var firstRandomNumber = Math.floor(Math.random() * raffleList.length);
+    var firstPrize = raffleList[firstRandomNumber];
+    raffleList = [];
+    bot.reply(message, "Here are the winners of the Raffle :"+
+        "\nThird Prize: <@" + thirdPrize + ">" +
+        "\nSecond Prize: <@" + secondPrize + ">" +
+        "\nFirst Prize: <@" + firstPrize + ">");
+    bot.startPrivateConversation({user: thirdPrize}, function(response, convo) { 
+        convo.say('yay, you got the third prize!');
+    });
+    bot.startPrivateConversation({user: secondPrize}, function(response, convo) { 
+        convo.say('yay, you got the second prize!');
+    });
+    bot.startPrivateConversation({user: firstPrize}, function(response, convo) { 
+        convo.say('yay, you got the first prize!');
+    });
+}
 
 function useSlackQuestion(reply, convo, bot) {
     convo.ask({
