@@ -102,6 +102,7 @@ controller.hears(['start survey', 'start', 'survey'], 'direct_message,direct_men
                                     {
                                         pattern: "it was okay",
                                         callback: function(reply, convo) {
+                                            bot.replyInteractive(reply, "it was only okay?");
                                             convo.say('it was only okay?');
                                             convo.next();
                                             console.log("botOkay:",bot);
