@@ -48,7 +48,7 @@ controller.hears(['help'], 'direct_message,direct_mention', function (bot, messa
 controller.on('slash_command', function (slashCommand, message) {
 
     switch (message.command) {
-        case "/quickPoll":
+        case "/poll":
             var pollText = message.text.split(os.EOL).map((it) => { return it.trim() })
             //message.text.trim().split(/\r?\n/);
             if (!pollText[0]) {
@@ -78,7 +78,7 @@ controller.on('slash_command', function (slashCommand, message) {
                 attachments[idx] = {
                   text: '',
                   fallback: question,
-                  callback_id: 'quick_poll_callback',
+                  callback_id: 'poll_callback',
                   color: '#78449b',
                   actions: []
                 }
@@ -91,7 +91,7 @@ controller.on('slash_command', function (slashCommand, message) {
             attachments.push({
                 text: '',
                 fallback: 'move to the bottom',
-                callback_id: 'quick_poll_callback',
+                callback_id: 'poll_callback',
                 actions: bottomActions
             })
 
