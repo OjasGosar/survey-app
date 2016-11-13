@@ -72,7 +72,7 @@ controller.on('slash_command', function (slashCommand, message) {
             }
             var attachments = []
             actions.forEach((action, num) => {
-              let idx = Math.floor(num / 5)
+              var idx = Math.floor(num / 5)
               if (!attachments[idx]) {
                 attachments[idx] = {
                   text: '',
@@ -85,7 +85,7 @@ controller.on('slash_command', function (slashCommand, message) {
               attachments[idx].actions.push(action)
             })
             
-            let bottomActions = [{ name: 'resurrect', text: ':arrow_double_down: Resurrect', type: 'button', value: 'resurrect', style: 'default' }]
+            var bottomActions = [{ name: 'resurrect', text: ':arrow_double_down: Resurrect', type: 'button', value: 'resurrect', style: 'default' }]
 
             attachments.push({
                 text: '',
