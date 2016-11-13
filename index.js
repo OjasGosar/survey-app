@@ -54,6 +54,7 @@ controller.on('slash_command', function (slashCommand, message) {
             if (!pollText[0]) {
                 slashCommand.replyPrivate(message, "Please provide a question..");
                 break;
+            }
             if (!(pollText.length > 1) || pollText.length > 16) {
                 slashCommand.replyPrivate(message, "You may only provide 15 options. Here is what you entered: " + message.text);
                 break;
