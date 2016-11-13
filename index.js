@@ -47,8 +47,9 @@ controller.hears(['help'], 'direct_message,direct_mention', function (bot, messa
 
 controller.on('slash_command', function (slashCommand, message) {
 
+    console.log("message.command", message.command);
     switch (message.command) {
-        case "/poll":
+        case "/testpoll":
             var pollText = message.text.split(os.EOL).map((it) => { return it.trim() })
             //message.text.trim().split(/\r?\n/);
             if (!pollText[0]) {
