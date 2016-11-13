@@ -110,7 +110,8 @@ controller.on('slash_command', function (slashCommand, message) {
                         attachments: attachments
                     });
                 }
-            }
+            });
+            break;
 
 
         default:
