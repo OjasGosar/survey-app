@@ -20,7 +20,7 @@ config.debug = true;
 config.logLevel = 7;
 config.retry = Infinity;
 config.interactive_replies = true;
-config.hostname = '0.0.0.0';
+
 
 var controller = Botkit.slackbot(config);
 
@@ -44,7 +44,8 @@ controller.hears(['help'], 'direct_message,direct_mention', function (bot, messa
 
 controller.on('slash_command', function (slashCommand, message) {
 
-    console.log("message.command", message.command);
+    console.log("message:", message);
+    console.log("slashCommand:", slashCommand);
     switch (message.command) {
         case "/poll":
             var pollText = message.text.split(os.EOL).map((it) => { return it.trim() })
@@ -94,7 +95,8 @@ controller.on('slash_command', function (slashCommand, message) {
             })
 
             slashCommand.api.users.info({
-                user: message.user
+                user: message.user,
+                token: message.meta.bot_token
             }, function(err, userInfo) {
                 if (err) {
                     slashCommand.botkit.log('Failed to get channel info :(', err);
