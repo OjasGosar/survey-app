@@ -59,8 +59,8 @@ controller.on('slash_command', function (slashCommand, message) {
             }
             var question = pollText[0];
             var actions = []
-            for (var i = 1; i < lines.length; i++) {
-                var answer = lines[i]
+            for (var i = 1; i < pollText.length; i++) {
+                var answer = pollText[i];
                 actions.push({
                   name: 'answer',
                   text: answer,
