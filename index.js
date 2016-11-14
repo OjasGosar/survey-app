@@ -97,7 +97,7 @@ controller.on('slash_command', function (slashCommand, message) {
 
             slashCommand.api.users.info({
                 user: message.user,
-                token: message.meta.bot_token
+                token: message.token
             }, function(err, userInfo) {
                 if (err) {
                     slashCommand.botkit.log('Failed to get channel info :(', err);
