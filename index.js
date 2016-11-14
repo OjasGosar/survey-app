@@ -47,6 +47,7 @@ controller.on('slash_command', function (slashCommand, message) {
 
     console.log("message:", message);
     console.log("slashCommand:", slashCommand);
+    console.log("slashCommand.webserver.api.users.info:", slashCommand.webserver.api.users.info);
     switch (message.command) {
         case "/poll":
             var pollText = message.text.split(os.EOL).map((it) => { return it.trim() })
@@ -95,9 +96,8 @@ controller.on('slash_command', function (slashCommand, message) {
                 actions: bottomActions
             })
 
-            slashCommand.api.users.info({
-                user: message.user,
-                token: message.token
+            slashCommand.webserver.api.users.info({
+                user: message.user
             }, function(err, userInfo) {
                 if (err) {
                     slashCommand.botkit.log('Failed to get channel info :(', err);
