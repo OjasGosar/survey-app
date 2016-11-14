@@ -1,7 +1,3 @@
-// if (!process.env.SLACK_TOKEN) {
-//     console.log('Error: Specify token in environment');
-//     process.exit(1);
-// }
 
 var Botkit = require('botkit');
 var os = require('os');
@@ -24,6 +20,7 @@ config.debug = true;
 config.logLevel = 7;
 config.retry = Infinity;
 config.interactive_replies = true;
+config.hostname = '0.0.0.0';
 
 var controller = Botkit.slackbot(config);
 
@@ -49,7 +46,7 @@ controller.on('slash_command', function (slashCommand, message) {
 
     console.log("message.command", message.command);
     switch (message.command) {
-        case "/testpoll":
+        case "/poll":
             var pollText = message.text.split(os.EOL).map((it) => { return it.trim() })
             //message.text.trim().split(/\r?\n/);
             if (!pollText[0]) {
