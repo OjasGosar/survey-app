@@ -17,6 +17,11 @@ config:
   info: time for survey to end after started in milliseconds in a channel
   type: text
   global: true
+- name: MONGOLAB_URI
+  friendly_name: mongo lab uri
+  info: mongo lab uri
+  type: text
+  global: true
 # - name: INDIVIDUAL_SCRUM_TIMEOUT
 #   friendly_name: individual_scrum_timeout
 #   info: time in milliseconds to retry if the user is not ready for scrum

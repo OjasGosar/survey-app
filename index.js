@@ -3,6 +3,7 @@ var Botkit = require('botkit');
 var os = require('os');
 var Moment = require('moment-timezone');
 var BeepBoop = require('beepboop-botkit');
+var logger = require('morgan');
 
 var config = {}
 if (process.env.MONGOLAB_URI) {
@@ -22,13 +23,21 @@ config.retry = Infinity;
 config.interactive_replies = true;
 config.hostname = '0.0.0.0';
 
+var PORT = process.env.PORT || 8080;
 
 var controller = Botkit.slackbot(config);
 
 var beepboop = BeepBoop.start(controller, { debug: true });
 
-controller.setupWebserver(process.env.PORT, function (err, webserver) {
-    controller.createWebhookEndpoints(controller.webserver);
+controller.setupWebserver(PORT, function (err, webserver) {
+    if (err) {
+        console.error(err);
+        process.exit(1);
+    }
+    webserver.use(logger('tiny'))
+    // Setup our slash command webhook endpoints
+    controller.createWebhookEndpoints(webserver);
+    //controller.createWebhookEndpoints(controller.webserver);
 });
 
 var raffleList = [];
